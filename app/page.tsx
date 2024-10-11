@@ -23,7 +23,7 @@ export default function Home() {
         </FormGroup>
         <hr />
         <Button variant="contained" color="primary">
-          ボタン
+          Hello, World!
         </Button>
       </Paper>
     </Container>
