@@ -21,9 +21,9 @@ import styles from "../page.module.css";
 const schema = z.object({
     items: z.array(
         z.object({foodName: z.string(), 
-            kCal: z.string().transform((val => Number(val))), 
-            registedDay: z.string(), 
-            registedTime: z.string()
+            takeKcal: z.string().transform((val => Number(val))), 
+            takeDay: z.string(), 
+            takeTime: z.string()
         })
     )
 });
@@ -32,7 +32,7 @@ dayjs.locale("ja");
 
 type FormData = z.infer<typeof schema>;
 const initDate = dayjs().format("YYYY-MM-DD");
-const initVal = { foodName: "", kCal: 0, registedDay: initDate, registedTime: "朝" };
+const initVal = { foodName: "", takeKcal: 0, takeDay: initDate, takeTime: "朝" };
 
 const PageOne = () => {
     const { handleSubmit, control } = useForm<FormData>({
@@ -50,9 +50,16 @@ const PageOne = () => {
 
     const [isSubmitted, setIsSubmitted] = React.useState(false);
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = async (data: FormData) => {
+        const response = await fetch("/api/kcalIntake", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        
+        const resBody = response.json;
+        console.log(resBody);
         setIsSubmitted(true);
-        console.log(data.items);
     }
 
     return (
@@ -75,21 +82,21 @@ const PageOne = () => {
                                     )}
                                 />
                                 <Controller
-                                    name={`items.${index}.kCal`}
+                                    name={`items.${index}.takeKcal`}
                                     control={control}
                                     render={({field}) => (
                                         <TextField type="number" {...field} placeholder={"摂取カロリー"} />
                                     )}
                                 />
                                 <Controller
-                                    name={`items.${index}.registedDay`}
+                                    name={`items.${index}.takeDay`}
                                     control={control}
                                     render={({field}) => (
                                         <TextField type="date" {...field} placeholder={"食べた日時"} />
                                     )}
                                 />
                                 <Controller
-                                name={`items.${index}.registedTime`}
+                                name={`items.${index}.takeTime`}
                                     control={control}
                                     render={({field}) => (
                                         <TextField {...field} placeholder={"食べた時間帯"} />
