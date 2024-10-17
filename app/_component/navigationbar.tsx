@@ -3,7 +3,7 @@
 import {
   AppBar,
   Toolbar,
-  Typography
+  Link
 } from "@mui/material";
 
 import React from "react";
@@ -15,9 +15,9 @@ const NavigationBar = () => {
             sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
         >
         <Toolbar>
-            <Typography variant="h6" noWrap component="div">
-                Clipped drawer
-            </Typography>
+            <Link href="/" underline="none" color="inherit">
+                摂取カロリー記録表
+            </Link>
         </Toolbar>
         </AppBar>);
 };

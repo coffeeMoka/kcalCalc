@@ -1,30 +1,20 @@
+"use client";
+
 import styles from "./page.module.css";
 import {
-  Button,
-  Checkbox,
   Container,
-  FormControlLabel,
-  FormGroup,
   Paper,
+  Typography
 } from "@mui/material";
 
 export default function Home() {
   return (
     <Container>
       <Paper elevation={3} sx={{ p: 5 }}>
-        <h1 className={styles.title}>Welcome to Material UI!</h1>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox defaultChecked />}
-            label="Label"
-          />
-          <FormControlLabel required control={<Checkbox />} label="Required" />
-          <FormControlLabel disabled control={<Checkbox />} label="Disabled" />
-        </FormGroup>
-        <hr />
-        <Button variant="contained" color="primary">
-          Hello, World
-        </Button>
+        <h1 className={styles.title}>Welcome to Fuyunatsu&apos;s Kcal Manager!</h1>
+        <Typography>TOP画面<br/>
+          特に何もないよ
+        </Typography>
       </Paper>
     </Container>
   );
