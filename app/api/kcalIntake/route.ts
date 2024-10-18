@@ -9,7 +9,7 @@ dayjs.locale("ja");
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     console.log(`GET /kcalIntake ${request}`);
-    const result = await prisma.intakeKcal.findMany();
+    const result = await prisma.intakeKcal.findMany({ include: { takeTimeType: true } });
     console.log(result);
     return NextResponse.json(
         {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
                 foodName: item.foodName,
                 takeKcal: Number(item.takeKcal),
                 takeDay: dayjs(item.takeDay).add(1, 'd').toDate(),
-                takeTime: item.takeTime
+                takeTimeTypeId: item.takeTime
             }
         });
         takeFoodList.push(takeFood);

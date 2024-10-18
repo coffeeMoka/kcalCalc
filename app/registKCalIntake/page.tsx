@@ -13,6 +13,8 @@ import {
     Container, 
     Paper,
     Breadcrumbs,
+    Select,
+    MenuItem,
 } from "@mui/material";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
@@ -23,7 +25,7 @@ const schema = z.object({
         z.object({foodName: z.string(), 
             takeKcal: z.string().transform((val => Number(val))), 
             takeDay: z.string(), 
-            takeTime: z.string()
+            takeTime: z.string().transform((val => Number(val)))
         })
     )
 });
@@ -32,7 +34,7 @@ dayjs.locale("ja");
 
 type FormData = z.infer<typeof schema>;
 const initDate = dayjs().format("YYYY-MM-DD");
-const initVal = { foodName: "", takeKcal: 0, takeDay: initDate, takeTime: "朝" };
+const initVal = { foodName: "", takeKcal: 0, takeDay: initDate, takeTime: 1 };
 
 const PageOne = () => {
     const { handleSubmit, control } = useForm<FormData>({
@@ -51,6 +53,8 @@ const PageOne = () => {
     const [isSubmitted, setIsSubmitted] = React.useState(false);
 
     const onSubmit = async (data: FormData) => {
+        console.log("kita");
+
         const response = await fetch("/api/kcalIntake", {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -96,10 +100,17 @@ const PageOne = () => {
                                     )}
                                 />
                                 <Controller
-                                name={`items.${index}.takeTime`}
+                                    name={`items.${index}.takeTime`}
                                     control={control}
                                     render={({field}) => (
-                                        <TextField {...field} placeholder={"食べた時間帯"} />
+                                        <Select
+                                            labelId="select-label" label="select" {...field}
+                                        >
+                                            <MenuItem value="1">その他</MenuItem>
+                                            <MenuItem value="2">朝</MenuItem>
+                                            <MenuItem value="3">昼</MenuItem>
+                                            <MenuItem value="4">夜</MenuItem>
+                                        </Select>
                                     )}
                                 />
                                 <Button variant="outlined" onClick={() => isFirstField ? append(initVal) : remove(index) }>

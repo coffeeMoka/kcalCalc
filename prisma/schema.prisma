@@ -14,11 +14,18 @@ datasource db {
 }
 
 model IntakeKcal {
-  id        Int       @id @default(autoincrement())
-  foodName  String  
-  takeKcal  Int
-  takeDay   DateTime
-  takeTime  String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id             BigInt       @id @default(autoincrement())
+  foodName       String
+  takeKcal       Int
+  takeDay        DateTime
+  takeTimeType   TakeTimeType @relation(fields: [takeTimeTypeId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  takeTimeTypeId Int
+}
+
+model TakeTimeType {
+  id         Int          @id @default(autoincrement())
+  takeType   String
+  IntakeKcal IntakeKcal[]
 }
