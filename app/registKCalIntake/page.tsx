@@ -106,10 +106,10 @@ const PageOne = () => {
                                         <Select
                                             labelId="select-label" label="select" {...field}
                                         >
-                                            <MenuItem value="1">その他</MenuItem>
-                                            <MenuItem value="2">朝</MenuItem>
-                                            <MenuItem value="3">昼</MenuItem>
-                                            <MenuItem value="4">夜</MenuItem>
+                                            <MenuItem value="1">朝</MenuItem>
+                                            <MenuItem value="2">昼</MenuItem>
+                                            <MenuItem value="3">夜</MenuItem>
+                                            <MenuItem value="4">その他</MenuItem>
                                         </Select>
                                     )}
                                 />
