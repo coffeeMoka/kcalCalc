@@ -53,13 +53,11 @@ const PageOne = () => {
     const [isSubmitted, setIsSubmitted] = React.useState(false);
 
     const onSubmit = async (data: FormData) => {
-        console.log("kita");
-
-        const response = await fetch("/api/kcalIntake", {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
+            const response = await fetch("/api/kcalIntake", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
         
         const resBody = response.json;
         console.log(resBody);
@@ -69,7 +67,7 @@ const PageOne = () => {
     return (
          <Container>
             <Breadcrumbs aria-label="breadcrumb">
-                <Typography color="text.primary">摂取カロリー登録</Typography>
+                <Typography color="primary">摂取カロリー登録</Typography>
             </Breadcrumbs>
             <Paper elevation={3} sx={{ p: 5 }}>
                 <h1 className={styles.title}>摂取カロリー登録</h1>

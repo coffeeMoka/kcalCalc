@@ -1,0 +1,1 @@
+SELECT DATE_FORMAT(takeDay, '%Y-%m-%d') AS time, SUM(takeKcal) AS dailyTakeKcal FROM IntakeKcal GROUP BY DATE_FORMAT(takeDay, '%Y%m%d');

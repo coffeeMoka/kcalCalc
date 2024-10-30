@@ -1,43 +1,19 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { getDailyIntakeKcal } from "@prisma/client/sql"
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
-
-type ResponseObj = {
-    id: number,
-    foodName: string,
-    takeKcal: number,
-    takeDay: string,
-    takeTimeType: string,
-    createdAt: string
-};
 
 const prisma = new PrismaClient();
 dayjs.locale("ja");
 
 export async function GET(request: NextRequest): Promise<NextResponse> {
     console.log(`GET /kcalIntake ${request}`);
-    const result = await prisma.intakeKcal.findMany({ include: { takeTimeType: true } });
+    const result = await prisma.$queryRawTyped(getDailyIntakeKcal());
     console.log(result);
-    const response: ResponseObj[] = [];
-    for (const r of result) {
-        const obj: ResponseObj = {
-            id: Number(r.id),
-            foodName: r.foodName,
-            takeKcal: r.takeKcal,
-            takeDay: r.takeDay.toLocaleString(),
-            takeTimeType: r.takeTimeType.takeType,
-            createdAt: r.createdAt.toLocaleString(),
-        };
-        response.push(obj);
-        console.log(obj);
-    }
     return NextResponse.json(
-        {
-            message: `GET /kcalIntake ${response}`
-        },
-        { status: 200 }
+        result
     );
 }
 
