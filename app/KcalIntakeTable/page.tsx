@@ -66,7 +66,7 @@ const PageTwo = () => {
             <Paper elevation={3} sx={{ p: 5 }}>
                 <h1 className={styles.title}>摂取カロリー一覧</h1>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 650 }} aria-label="takeKcal table">
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">日付</TableCell>
