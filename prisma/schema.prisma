@@ -15,7 +15,7 @@ datasource db {
 }
 
 model IntakeKcal {
-  id             BigInt       @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   foodName       String
   takeKcal       Int
   takeDay        DateTime

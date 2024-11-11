@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import {
   Container,
   Paper,
@@ -11,45 +12,59 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Link
+  TableRow
 } from "@mui/material";
 import dayjs from "dayjs";
 import "dayjs/locale/ja";
-import styles from "../page.module.css";
+import styles from "../../page.module.css";
 
 dayjs.locale("ja");
 
-type takeKcal = {
-    time: string,
-    dailyTakeKcal: number
+type takeTimeType = {
+    id: number,
+    takeType: string
 };
 
-type viewTakeKcal = {
-    date: string,
+type intakeKcal = {
+    id: number,
+    foodName: string,
     takeKcal: number,
-    takeResult: string
+    takeDay: Date,
+    takeTimeTypeId: number,
+    takeTimeType: takeTimeType
 };
 
-const limitKcal: number = 1800;
+type viewIntakeKcal = {
+    id: number,
+    foodName: string,
+    kcal: number,
+    takeDay: Date,
+    takeTimeTypeId: number,
+    takeTimeType: string
+};
 
 const PageTwo = () => {
-    const [rows, setRows] = useState<viewTakeKcal[]>([]);
+    const [rows, setRows] = useState<viewIntakeKcal[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const params = useParams();
 
     useEffect(() => {
+        
         async function getData() {
             if(!loading) {
                 return;
             }
-            const response = await fetch("/api/kcalIntake");
-            const takeKcalList: takeKcal[] = await response.json();
-            const result: viewTakeKcal[] = [];
+            const response = await fetch(`/api/kcalIntake/${encodeURIComponent(params.slug.toString())}`);
+            const takeKcalList: intakeKcal[] = await response.json();
+            const result: viewIntakeKcal[] = [];
             for (const takeKcal of takeKcalList) {
-                const viewTake: viewTakeKcal = {
-                    date: takeKcal.time,
-                    takeKcal: Number(takeKcal.dailyTakeKcal),
-                    takeResult: Number(takeKcal.dailyTakeKcal) <= limitKcal ? "OK" : "NG"
+                const viewTake: viewIntakeKcal = {
+                    id: takeKcal.id,
+                    foodName: takeKcal.foodName,
+                    kcal: takeKcal.takeKcal,
+                    takeDay: takeKcal.takeDay,
+                    takeTimeTypeId: takeKcal.takeTimeTypeId,
+                    takeTimeType: takeKcal.takeTimeType.takeType
                 }
                 result.push(viewTake);
             }
@@ -71,23 +86,21 @@ const PageTwo = () => {
                         <TableHead>
                             <TableRow>
                                 <TableCell align="center">日付</TableCell>
+                                <TableCell align="center">食品名</TableCell>
                                 <TableCell align="center">摂取カロリー</TableCell>
-                                <TableCell align="center">判定結果</TableCell>
+                                <TableCell align="center">食事したタイミング</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {rows.map((row) => (
                                 <TableRow
-                                    key={row.date}
+                                    key={row.id}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                <TableCell component="th" scope="row">
-                                    <Link href={`/KcalIntakeTable/${encodeURIComponent(row.date)}`} underline="none" color="inherit">
-                                        {row.date}
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="right">{row.takeKcal}</TableCell>
-                                <TableCell style={row.takeResult == "OK" ? {color: "cyan"} : {color: "magenta"}}>{row.takeResult}</TableCell>
+                                    <TableCell component="th" scope="row">{dayjs(row.takeDay).format("YYYY/MM/DD")}</TableCell>
+                                    <TableCell align="left">{row.foodName}</TableCell>
+                                    <TableCell align="right">{row.kcal}</TableCell>
+                                    <TableCell align="right">{row.takeTimeType}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

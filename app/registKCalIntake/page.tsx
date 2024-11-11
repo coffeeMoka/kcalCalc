@@ -53,11 +53,12 @@ const PageOne = () => {
     const [isSubmitted, setIsSubmitted] = React.useState(false);
 
     const onSubmit = async (data: FormData) => {
-            const response = await fetch("/api/kcalIntake", {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
+        console.log("kita");
+        const response = await fetch("/api/kcalIntake", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
         
         const resBody = response.json;
         console.log(resBody);
@@ -111,7 +112,7 @@ const PageOne = () => {
                                         </Select>
                                     )}
                                 />
-                                <Button variant="outlined" onClick={() => isFirstField ? append(initVal) : remove(index) }>
+                                <Button variant="outlined" onClick={ () => isFirstField ? append(initVal) : remove(index) }>
                                     {isFirstField ? "行追加" : "行削除"}
                                 </Button>
                             </Stack>
